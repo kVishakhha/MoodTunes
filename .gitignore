@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Local tooling and secrets
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+
+# Generated artifacts
+*.joblib
+*.pkl
+*.pickle
+*.log
+.streamlit/secrets.toml
