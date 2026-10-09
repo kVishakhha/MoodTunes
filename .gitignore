@@ -2,11 +2,20 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
 
 # Virtual environments
 venv/
 .venv/
 env/
+
+# Test, type-checker, and linter caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
 
 # Local tooling and secrets
 .env
@@ -14,10 +23,16 @@ env/
 !.env.example
 .vscode/
 .idea/
+.streamlit/secrets.toml
 
 # Generated artifacts
 *.joblib
 *.pkl
 *.pickle
 *.log
-.streamlit/secrets.toml
+build/
+dist/
+
+# Operating system files
+.DS_Store
+Thumbs.db
