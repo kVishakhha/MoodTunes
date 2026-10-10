@@ -7,8 +7,102 @@ from model_pipeline import make_vectorizer, preprocess_text
 st.set_page_config(
     page_title="MoodTunes",
     page_icon="🎵",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="collapsed",
 )
+
+
+st.markdown(
+    """
+    <style>
+    .block-container {
+        max-width: 920px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+    .mood-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 2.5rem 2.6rem;
+        margin: 0.5rem 0 1.5rem;
+        border: 1px solid #d8eadb;
+        border-radius: 28px;
+        background: linear-gradient(135deg, #f1faf2 0%, #ffffff 68%, #e6f5e8 100%);
+    }
+    .mood-hero::after {
+        position: absolute;
+        top: -74px;
+        right: -42px;
+        width: 230px;
+        height: 230px;
+        border: 32px solid rgba(39, 125, 67, 0.08);
+        border-radius: 50%;
+        content: "";
+    }
+    .mood-eyebrow {
+        color: #277d43;
+        font-size: 0.76rem;
+        font-weight: 750;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+    .mood-hero h1 {
+        max-width: 620px;
+        margin: 0.7rem 0 0.6rem;
+        color: #173b25;
+        font-size: clamp(2.1rem, 6vw, 3.5rem);
+        line-height: 1.08;
+        letter-spacing: -0.045em;
+    }
+    .mood-hero p {
+        max-width: 560px;
+        margin: 0;
+        color: #52665a;
+        font-size: 1.05rem;
+        line-height: 1.7;
+    }
+    .mood-prompt {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin-top: 1.3rem;
+        padding: 0.55rem 0.85rem;
+        border: 1px solid #d8eadb;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+        color: #277d43;
+        font-size: 0.82rem;
+        font-weight: 650;
+    }
+    div[data-testid="stTextArea"] textarea {
+        border-radius: 14px;
+    }
+    div[data-testid="stFormSubmitButton"] button {
+        min-height: 3rem;
+        border-radius: 12px;
+        font-weight: 700;
+    }
+    .mood-footer {
+        padding-top: 1.2rem;
+        border-top: 1px solid #e5eee6;
+        color: #718078;
+        font-size: 0.82rem;
+        text-align: center;
+    }
+    @media (max-width: 640px) {
+        .block-container {
+            padding: 1rem 1rem 2rem;
+        }
+        .mood-hero {
+            padding: 1.8rem 1.4rem;
+            border-radius: 22px;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 @st.cache_data
 def load_data():
@@ -71,8 +165,6 @@ def train_model():
     return vectorizer, model
 
 
-vectorizer, model = train_model()
-
 emotion_to_mood = {
 
     "joy": "Happy",
@@ -103,8 +195,7 @@ emotion_emoji = {
     "surprise": "😲"
 }
 
-def detect_emotion(text):
-
+def detect_emotion(text, vectorizer, model):
     clean_text = preprocess_text(
         text
     )
@@ -150,90 +241,69 @@ def recommend_songs(
     return recommendations
 
 
-st.title("🎵 MoodTunes")
-
-st.subheader(
-    "Music that matches your mood"
+st.markdown(
+    """
+    <div class="mood-hero">
+      <div class="mood-eyebrow">Your personal soundtrack</div>
+      <h1>Find the music in your mood.</h1>
+      <p>Share what is on your mind. MoodTunes will find the feeling behind your words and pair it with songs to match.</p>
+      <div class="mood-prompt">✳ &nbsp; A little more you, in every playlist</div>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
-st.write(
-    "Tell us how you're feeling, and MoodTunes "
-    "will detect your emotion and recommend songs "
-    "that match your mood."
-)
+with st.container(border=True):
+    st.subheader("What’s your mood today?")
+    st.caption("A sentence or two is all we need to find your sound.")
 
+    with st.form("mood_form"):
+        user_text = st.text_area(
+            "Tell us how you’re feeling",
+            placeholder="For example: I had a long day, but I’m proud of what I got done.",
+            height=135,
+            max_chars=1000,
+        )
+        submitted = st.form_submit_button(
+            "Find my soundtrack",
+            type="primary",
+            icon=":material/graphic_eq:",
+            width="stretch",
+        )
 
-user_text = st.text_area(
-    "How are you feeling today?",
-    placeholder=(
-        "Example: I am feeling happy and "
-        "excited today..."
-    ),
-    height=150
-)
-
-
-if st.button(
-    "🎧 Detect My Mood",
-    use_container_width=True
-):
-
+if submitted:
     if not user_text.strip():
-
-        st.warning(
-            "Please enter something about "
-            "how you're feeling."
-        )
-
+        st.warning("Write a little about how you’re feeling, then try again.")
     else:
+        with st.spinner("Finding the feeling in your words..."):
+            vectorizer, model = train_model()
+            emotion = detect_emotion(user_text, vectorizer, model)
+            mood = emotion_to_mood.get(emotion)
+            recommendations = recommend_songs(emotion, number_of_songs=5)
 
-        emotion = detect_emotion(
-            user_text
-        )
+        st.write("")
+        st.markdown("### Your mood, your music")
+        emotion_col, mood_col = st.columns(2)
+        with emotion_col:
+            with st.container(border=True):
+                st.caption("WE HEARD")
+                st.subheader(f"{emotion_emoji.get(emotion, '')} {emotion.title()}")
+        with mood_col:
+            with st.container(border=True):
+                st.caption("YOUR SOUND")
+                st.subheader(f"🎵 {mood}")
 
-        mood = emotion_to_mood.get(
-            emotion
-        )
-
-        recommendations = recommend_songs(
-            emotion,
-            number_of_songs=5
-        )
-
-        st.success(
-            f"Detected Emotion: "
-            f"{emotion_emoji.get(emotion, '')} "
-            f"{emotion.title()}"
-        )
-
-        st.info(
-            f"Recommended Mood: 🎵 {mood}"
-        )
-
-        st.subheader(
-            "🎶 Recommended Songs"
-        )
-
+        st.write("")
+        st.markdown("### Made for this moment")
         if recommendations.empty:
-
-            st.warning(
-                "No songs were found for "
-                "this mood."
-            )
-
+            st.info("We couldn’t find songs for this mood just yet.")
         else:
-
             for _, song in recommendations.iterrows():
+                with st.container(border=True):
+                    st.markdown(f"**{song['song']}**")
+                    st.caption(f"{song['artist']}  ·  {song['language']}")
 
-                st.markdown(
-                    f"**{song['song']}** — "
-                    f"{song['artist']} "
-                    f"({song['language']})"
-                )
-
-st.markdown("---")
-
-st.caption(
-    "MoodTunes uses NLP, TF-IDF and SVM "
-    "to detect emotions from text."
+st.markdown(
+    '<div class="mood-footer">MoodTunes · A soundtrack for wherever you are.</div>',
+    unsafe_allow_html=True,
 )

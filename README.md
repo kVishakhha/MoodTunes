@@ -5,11 +5,29 @@ MoodTunes detects the emotion expressed in a short text and recommends songs for
 ## Run locally
 
 1. Install Python 3.10 or newer.
-2. Create and activate a virtual environment.
-3. Install dependencies:
+2. From the project root, create and activate a virtual environment:
+
+   ```bash
+   python -m venv venv
+   ```
+
+   On Windows PowerShell:
+
+   ```powershell
+   .\venv\Scripts\Activate.ps1
+   ```
+
+   On macOS or Linux:
+
+   ```bash
+   source venv/bin/activate
+   ```
+
+3. Install dependencies and the NLTK data used for preprocessing:
 
    ```bash
    pip install -r requirements.txt
+   python -m nltk.downloader stopwords wordnet omw-1.4
    ```
 
 4. Start the app from the project root:
@@ -18,7 +36,7 @@ MoodTunes detects the emotion expressed in a short text and recommends songs for
    streamlit run src/streamlit_app.py
    ```
 
-The app reads its training and song data from `data/training.csv` and `data/songs.csv`. NLTK corpora used by preprocessing may need to be downloaded once (`stopwords`, `wordnet`, and `omw-1.4`).
+Open the local URL printed by Streamlit, usually `http://localhost:8501`. The app trains its model the first time you submit a non-empty mood description; the cached model is reused until the app process restarts.
 
 ## Project layout
 
