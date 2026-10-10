@@ -173,11 +173,11 @@ emotion_to_mood = {
 
     "love": "Romantic",
 
-    "anger": "Energetic",
+    "anger": "Angry",
 
-    "fear": "Soothing",
+    "fear": "Calm",
 
-    "surprise": "Upbeat"
+    "surprise": "Energetic"
 }
 
 emotion_emoji = {

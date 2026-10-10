@@ -47,4 +47,4 @@ Open the local URL printed by Streamlit, usually `http://localhost:8501`. The ap
 
 ## Emotion to mood mapping
 
-The app maps sadness to Calm, joy to Happy, love to Romantic, anger to Energetic, fear to Soothing, and surprise to Upbeat.
+The app maps sadness and fear to Calm, joy to Happy, love to Romantic, anger to Angry, and surprise to Energetic.
