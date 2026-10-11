@@ -47,7 +47,7 @@ The evaluation script reads `data/training.csv` and `data/test.csv` and rewrites
 
 The repository contains the training, validation, and test splits under `data/`, with six emotion labels: sadness, joy, love, anger, fear, and surprise. The app's song catalog is stored separately in `data/songs.csv`.
 
-**Dataset provenance:** The current repository documentation does not identify the original source, version, or license of the emotion dataset. Add the original dataset citation and license here before redistributing the data or presenting the project as reproducible research. The tracked `data/processed_training.csv` is a generated preprocessing output; the app itself reads `data/training.csv`.
+**Dataset provenance:** The current repository documentation does not identify the original source, version, or license of the emotion dataset. Add the original dataset citation and license here before redistributing the data or presenting the project as reproducible research. The preprocessing script can generate `data/processed_training.csv`, but this redundant output is ignored by Git; the app itself reads `data/training.csv`.
 
 ## Run locally
 
