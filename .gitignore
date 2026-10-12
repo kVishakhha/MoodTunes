@@ -1,1 +1,38 @@
-# Python\n__pycache__/\n*.py[cod]\n*$py.class\n*.egg-info/\n\n# Virtual environments\nvenv/\n.venv/\nenv/\n\n# Test, type-checker, and linter caches\n.pytest_cache/\n.mypy_cache/\n.ruff_cache/\n\n# Jupyter\n.ipynb_checkpoints/\n\n# Local tooling and secrets\n.env\n.env.*\n!.env.example\n.vscode/\n.idea/\n.streamlit/secrets.toml\n\n# Generated artifacts\n*.joblib\n*.pkl\n*.pickle\n*.log\nbuild/\ndist/\ndata/processed_training.csv\ndata/*_confusion_matrix.png\n\n# Operating system files\n.DS_Store\nThumbs.db\n
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Test, type-checker, and linter caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local tooling and secrets
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+.streamlit/secrets.toml
+
+# Generated artifacts
+*.joblib
+*.pkl
+*.pickle
+*.log
+build/
+dist/
+
+# Operating system files
+.DS_Store
+Thumbs.db
