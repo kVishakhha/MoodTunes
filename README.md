@@ -104,9 +104,16 @@ Open the local URL shown by Streamlit, usually http://localhost:8501. The app tr
 - `data/songs.csv` — song catalog
 - `data/model_comparison.csv`, `data/svm_tuning_results.csv` — recorded evaluation results
 
-## Screenshots
+## App walkthrough
 
-The repository currently has no committed screenshots of the running app. Add genuine screenshots captured from the current Streamlit interface (for example, to `docs/images/`) and embed them here once available; no mock screenshots are used.
+The screenshots below are intended to document the main user journey once the image files are committed under `docs/images/`:
+
+1. **Landing page** — introduce MoodTunes and the mood-entry form.
+2. **Mood input** — enter a short description of how you are feeling.
+3. **Emotion and listening mood** — see the predicted emotion alongside the mapped listening mood (for example, Sadness → Calm).
+4. **Recommendations** — browse the tracks selected for that listening mood.
+
+The screenshots should be kept in sync with the current Streamlit UI and should show genuine application output, not mockups.
 
 ## Limitations and next steps
 
